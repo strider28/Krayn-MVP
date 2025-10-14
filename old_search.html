@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Equipment - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            min-width: 1200px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Search Header */
+        .search-header {
+            padding: 120px 2rem 3rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .search-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 0.9rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar Filters */
+        .filters {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .filter-section {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 0.8rem;
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .price-range input {
+            width: 100%;
+            padding: 0.6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Results */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-count {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .results-count strong {
+            color: var(--text-light);
+            font-weight: 700;
+        }
+
+        .sort-options select {
+            padding: 0.7rem 1rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        /* Equipment Cards */
+        .equipment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .equipment-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr auto;
+            gap: 2rem;
+            transition: all 0.3s;
+        }
+
+        .equipment-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(14, 165, 233, 0.2);
+        }
+
+        .equipment-image-small {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .equipment-details {
+            flex: 1;
+        }
+
+        .equipment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .equipment-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-recommended {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .equipment-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .equipment-specs-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .supplier-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .supplier-name {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .rating {
+            color: var(--secondary);
+        }
+
+        .equipment-pricing {
+            text-align: right;
+            min-width: 220px;
+        }
+
+        .price-large {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .price-period {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .lifecycle-cost {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+        }
+
+        .lifecycle-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .lifecycle-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .lifecycle-breakdown {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .delivery-info {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .delivery-included {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .savings {
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Comparison Bar */
+        .comparison-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .comparison-bar.active {
+            transform: translateY(0);
+        }
+
+        .comparison-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comparison-items {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .remove-btn:hover {
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">KRAYN</a>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Search Equipment</a>
+                <a href="#">Dashboard</a>
+                <a href="#">Request Quote</a>
+                <a href="#">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Header -->
+    <section class="search-header">
+        <div class="search-container">
+            <h1 class="search-title">Find Your Equipment</h1>
+            <div class="search-box">
+                <div class="input-group">
+                    <label>What do you need?</label>
+                    <input type="text" placeholder="e.g., Excavator, Bulldozer, Crane..." id="searchInput">
+                </div>
+                <div class="input-group">
+                    <label>Location</label>
+                    <select id="locationSelect">
+                        <option value="">All Locations</option>
+                        <option value="sydney">Sydney, NSW</option>
+                        <option value="melbourne">Melbourne, VIC</option>
+                        <option value="brisbane">Brisbane, QLD</option>
+                        <option value="perth">Perth, WA</option>
+                        <option value="adelaide">Adelaide, SA</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Start Date</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="input-group">
+                    <label>End Date</label>
+                    <input type="date" id="endDate">
+                </div>
+                <div class="input-group">
+                    <label>Shipment</label>
+                    <select id="shipmentMethod">
+                        <option value="delivered">Delivered</option>
+                        <option value="pickup">Pickup</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="search()">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Sidebar Filters -->
+        <aside class="filters">
+            <div class="filter-section">
+                <h3>Category</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat1" checked>
+                    <label for="cat1">Earthmoving (45)</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat2">
+                    <label for="cat2">Lifting (28)</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat3">
+                    <label for="cat3">Compaction (18)</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat4">
+                    <label for="cat4">Road Construction (22)</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Price Range (per month)</h3>
+                <div class="price-range">
+                    <input type="number" placeholder="Min" value="1000">
+                    <span>-</span>
+                    <input type="number" placeholder="Max" value="10000">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Availability</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="avail1" checked>
+                    <label for="avail1">Available Now</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="avail2">
+                    <label for="avail2">Within 7 Days</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Supplier Rating</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating1">
+                    <label for="rating1">4.5+ Stars</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating2">
+                    <label for="rating2">4.0+ Stars</label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div class="results-header">
+                <div class="results-count">
+                    Showing <strong>24 results</strong> for "Excavator" in Sydney
+                </div>
+                <div class="sort-options">
+                    <select>
+                        <option>AI Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Best Rated</option>
+                        <option>Nearest Location</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="equipment-list">
+                <!-- Equipment Item 1 -->
+                <div class="equipment-item">
+                    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=250&h=180" alt="Excavator" class="equipment-image-small">
+                    <div class="equipment-details">
+                        <div class="equipment-header">
+                            <div>
+                                <span class="equipment-badge">✓ Available Now</span>
+                                <span class="ai-recommended">🤖 AI Recommended</span>
+                                <h3>CAT 320 Hydraulic Excavator</h3>
+                            </div>
+                        </div>
+                        <div class="equipment-specs-list">
+                            <div class="spec-item">⚙️ 30-ton capacity</div>
+                            <div class="spec-item">🔧 300 HP</div>
+                            <div class="spec-item">📍 15 km away</div>
+                            <div class="spec-item">🕐 8hrs/day included</div>
+                        </div>
+                        <p style="color: var(--text-muted); margin: 1rem 0;">Perfect for large-scale excavation. Includes operator training and 24/7 support. Free delivery within 50km.</p>
+                        <div class="supplier-info">
+                            <div class="supplier-name">CoatesHire</div>
+                            <div class="rating">⭐ 4.8 (142 reviews)</div>
+                            <div style="color: var(--text-muted);">Updated 2h ago</div>
+                        </div>
+                    </div>
+                    <div class="equipment-pricing" data-equipment="CAT 320">
+                        <div class="price-large">$5,200</div>
+                        <div class="price-period">/month</div>
+                        
+                        <div class="lifecycle-cost">
+                            <div class="lifecycle-label">Total Lifecycle Cost (60 days / 2.0 months)</div>
+                            <div class="lifecycle-amount">$28,400</div>
+                            <div class="lifecycle-breakdown">Rental + Fuel + Operator + Maintenance</div>
+                        </div>
+
+                        <div class="delivery-info">
+                            <div class="delivery-included">✓ Delivery Included</div>
+                            <div>Delivery: Free (within 50km)</div>
+                            <div>Return: Free</div>
+                        </div>
+                        <div class="original-price">$6,500</div>
+                        <div class="savings">Save $1,300</div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">Get Quote</button>
+                            <button class="btn btn-secondary" onclick="addToComparison('CAT 320')">Compare</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Item 2 -->
+                <div class="equipment-item">
+                    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=250&h=180" alt="Excavator" class="equipment-image-small">
+                    <div class="equipment-details">
+                        <div class="equipment-header">
+                            <div>
+                                <span class="equipment-badge">✓ Available Now</span>
+                                <h3>Komatsu PC300 Excavator</h3>
+                            </div>
+                        </div>
+                        <div class="equipment-specs-list">
+                            <div class="spec-item">⚙️ 28-ton capacity</div>
+                            <div class="spec-item">🔧 280 HP</div>
+                            <div class="spec-item">📍 22 km away</div>
+                            <div class="spec-item">🕐 10hrs/day included</div>
+                        </div>
+                        <p style="color: var(--text-muted); margin: 1rem 0;">Fuel-efficient model with advanced GPS tracking. Includes maintenance package and insurance.</p>
+                        <div class="supplier-info">
+                            <div class="supplier-name">Kennards Hire</div>
+                            <div class="rating">⭐ 4.6 (89 reviews)</div>
+                            <div style="color: var(--text-muted);">Updated 4h ago</div>
+                        </div>
+                    </div>
+                    <div class="equipment-pricing" data-equipment="Komatsu PC300">
+                        <div class="price-large">$5,450</div>
+                        <div class="price-period">/month</div>
+                        
+                        <div class="lifecycle-cost">
+                            <div class="lifecycle-label">Total Lifecycle Cost (60 days / 2.0 months)</div>
+                            <div class="lifecycle-amount">$29,900</div>
+                            <div class="lifecycle-breakdown">Rental + Fuel + Operator + Maintenance</div>
+                        </div>
+
+                        <div class="delivery-info">
+                            <div class="delivery-included">✓ Delivery Included</div>
+                            <div>Delivery: $250</div>
+                            <div>Return: $250</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">Get Quote</button>
+                            <button class="btn btn-secondary" onclick="addToComparison('Komatsu PC300')">Compare</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Item 3 -->
+                <div class="equipment-item">
+                    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=250&h=180" alt="Excavator" class="equipment-image-small">
+                    <div class="equipment-details">
+                        <div class="equipment-header">
+                            <div>
+                                <span class="equipment-badge" style="background: rgba(245, 158, 11, 0.1); color: var(--secondary);">⏰ 3 Available</span>
+                                <h3>Volvo EC380 Excavator</h3>
+                            </div>
+                        </div>
+                        <div class="equipment-specs-list">
+                            <div class="spec-item">⚙️ 32-ton capacity</div>
+                            <div class="spec-item">🔧 320 HP</div>
+                            <div class="spec-item">📍 8 km away</div>
+                            <div class="spec-item">🕐 Flexible hours</div>
+                        </div>
+                        <p style="color: var(--text-muted); margin: 1rem 0;">Premium excavator with climate-controlled cab. Perfect for precision work. Weekly rates available.</p>
+                        <div class="supplier-info">
+                            <div class="supplier-name">Emeco</div>
+                            <div class="rating">⭐ 4.9 (201 reviews)</div>
+                            <div style="color: var(--text-muted);">Updated 1h ago</div>
+                        </div>
+                    </div>
+                    <div class="equipment-pricing" data-equipment="Volvo EC380">
+                        <div class="price-large">$6,100</div>
+                        <div class="price-period">/month</div>
+                        
+                        <div class="lifecycle-cost">
+                            <div class="lifecycle-label">Total Lifecycle Cost (60 days / 2.0 months)</div>
+                            <div class="lifecycle-amount">$31,200</div>
+                            <div class="lifecycle-breakdown">Rental + Fuel + Operator + Maintenance</div>
+                        </div>
+
+                        <div class="delivery-info">
+                            <div style="color: var(--text-muted);">🚗 Pickup Available</div>
+                            <div>Self-collection</div>
+                            <div>Save on delivery costs</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">Get Quote</button>
+                            <button class="btn btn-secondary" onclick="addToComparison('Volvo EC380')">Compare</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Bar -->
+    <div class="comparison-bar" id="comparisonBar">
+        <div class="comparison-content">
+            <div>
+                <strong>Compare Equipment</strong>
+                <span style="color: var(--text-muted); margin-left: 1rem;" id="comparisonCount">0 items selected</span>
+            </div>
+            <div class="comparison-items" id="comparisonItems">
+                <!-- Items will be added here -->
+            </div>
+            <button class="btn btn-primary">Compare Now</button>
+        </div>
+    </div>
+
+    <script>
+        let comparisonList = [];
+
+        // Equipment data with cost components
+        const equipmentData = {
+            'CAT 320': {
+                monthlyRental: 5200,
+                fuelPerWeek: 800,
+                operatorPerWeek: 1400,
+                maintenancePerWeek: 150,
+                insurance: 200, // per month
+                delivery: 0,
+                return: 0
+            },
+            'Komatsu PC300': {
+                monthlyRental: 5450,
+                fuelPerWeek: 820,
+                operatorPerWeek: 1400,
+                maintenancePerWeek: 160,
+                insurance: 200,
+                delivery: 250,
+                return: 250
+            },
+            'Volvo EC380': {
+                monthlyRental: 6100,
+                fuelPerWeek: 850,
+                operatorPerWeek: 1500,
+                maintenancePerWeek: 170,
+                insurance: 200,
+                delivery: 0,
+                return: 0
+            }
+        };
+
+        function calculateLifecycleCost(equipmentName, days) {
+            const equipment = equipmentData[equipmentName];
+            if (!equipment) return 0;
+
+            const weeks = days / 7;
+            const months = days / 30;
+
+            // Calculate each component
+            const rental = equipment.monthlyRental * months;
+            const fuel = equipment.fuelPerWeek * weeks;
+            const operator = equipment.operatorPerWeek * weeks;
+            const maintenance = equipment.maintenancePerWeek * weeks;
+            const insurance = equipment.insurance * months;
+            const idleBuffer = rental * 0.10; // 10% of rental
+            
+            // Transportation (one-time costs)
+            const transportation = equipment.delivery + equipment.return;
+
+            const total = rental + fuel + operator + maintenance + insurance + idleBuffer + transportation;
+            return Math.round(total);
+        }
+
+        function getRentalDays() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (!startDate || !endDate) {
+                return 60; // Default to 2 months (60 days)
+            }
+
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            return diffDays > 0 ? diffDays : 60;
+        }
+
+        function updateLifecycleCosts() {
+            const days = getRentalDays();
+            const months = (days / 30).toFixed(1);
+
+            // Update all equipment cards
+            Object.keys(equipmentData).forEach(equipmentName => {
+                const cost = calculateLifecycleCost(equipmentName, days);
+                const elementId = equipmentName.replace(/\s+/g, '-');
+                
+                const costElement = document.querySelector(`[data-equipment="${equipmentName}"] .lifecycle-amount`);
+                const labelElement = document.querySelector(`[data-equipment="${equipmentName}"] .lifecycle-label`);
+                
+                if (costElement) {
+                    costElement.textContent = `${cost.toLocaleString()}`;
+                }
+                if (labelElement) {
+                    labelElement.textContent = `Total Lifecycle Cost (${days} days / ${months} months)`;
+                }
+            });
+        }
+
+        function search() {
+            updateLifecycleCosts();
+            alert('Search results updated based on your date range!');
+        }
+
+        function addToComparison(itemName) {
+            if (comparisonList.includes(itemName)) {
+                alert('Item already in comparison');
+                return;
+            }
+            
+            if (comparisonList.length >= 4) {
+                alert('You can compare up to 4 items');
+                return;
+            }
+
+            comparisonList.push(itemName);
+            updateComparisonBar();
+        }
+
+        function removeFromComparison(itemName) {
+            comparisonList = comparisonList.filter(item => item !== itemName);
+            updateComparisonBar();
+        }
+
+        function updateComparisonBar() {
+            const bar = document.getElementById('comparisonBar');
+            const count = document.getElementById('comparisonCount');
+            const items = document.getElementById('comparisonItems');
+
+            count.textContent = `${comparisonList.length} item${comparisonList.length !== 1 ? 's' : ''} selected`;
+
+            items.innerHTML = comparisonList.map(item => `
+                <div class="comparison-item">
+                    <span>${item}</span>
+                    <button class="remove-btn" onclick="removeFromComparison('${item}')">×</button>
+                </div>
+            `).join('');
+
+            if (comparisonList.length > 0) {
+                bar.classList.add('active');
+            } else {
+                bar.classList.remove('active');
+            }
+        }
+
+        // Add event listeners for date changes
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('startDate').addEventListener('change', updateLifecycleCosts);
+            document.getElementById('endDate').addEventListener('change', updateLifecycleCosts);
+        });
+    </script>
+</body>
+</html>

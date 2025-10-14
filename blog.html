@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Resources - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --accent: #8b5cf6;
+            --bg-darker: #020617;
+            --bg-dark: #0f172a;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            min-width: 1200px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 150px 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-color: var(--primary);
+        }
+
+        .featured-post {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .featured-image {
+            height: 500px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.3), rgba(139, 92, 246, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .featured-content {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .post-category {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-content h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .post-meta {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .featured-content p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .post-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .post-image {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(139, 92, 246, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .post-content {
+            padding: 2rem;
+        }
+
+        .post-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .post-content p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s;
+        }
+
+        .read-more:hover {
+            gap: 1rem;
+        }
+
+        .resources-section {
+            background: rgba(15, 23, 42, 0.3);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .resources-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .resource-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            display: flex;
+            gap: 2rem;
+            transition: all 0.3s;
+        }
+
+        .resource-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .resource-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .resource-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .resource-content p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter {
+            max-width: 800px;
+            margin: 4rem auto;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .newsletter h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KRAYN</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Equipment</a>
+                <a href="blog.html">Blog</a>
+                <a href="about.html">About</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Resources & <span class="gradient-text">Insights</span></h1>
+        <p>Expert guides, industry news, and tips to optimize your equipment procurement</p>
+    </div>
+
+    <div class="container">
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <button class="filter-btn active">All Posts</button>
+            <button class="filter-btn">Equipment Guides</button>
+            <button class="filter-btn">Industry News</button>
+            <button class="filter-btn">Cost Optimization</button>
+            <button class="filter-btn">Best Practices</button>
+            <button class="filter-btn">Case Studies</button>
+        </div>
+
+        <!-- Featured Post -->
+        <div class="featured-post">
+            <div class="featured-image">📊</div>
+            <div class="featured-content">
+                <span class="post-category">Cost Optimization</span>
+                <h2>How to Reduce Equipment Rental Costs by 30%</h2>
+                <div class="post-meta">By Anwar Malik • December 15, 2024 • 8 min read</div>
+                <p>
+                    Discover proven strategies used by Australia's leading contractors to dramatically reduce equipment rental expenses without compromising on quality or availability.
+                </p>
+                <a href="#" class="btn btn-primary">Read Full Article →</a>
+            </div>
+        </div>
+
+        <!-- Posts Grid -->
+        <div class="posts-grid">
+            <div class="post-card">
+                <div class="post-image">🚜</div>
+                <div class="post-content">
+                    <span class="post-category">Equipment Guides</span>
+                    <h3>Complete Guide to Excavator Selection for Construction Projects</h3>
+                    <div class="post-meta">December 10, 2024 • 6 min read</div>
+                    <p>Learn how to choose the right excavator size, capacity, and specifications for your specific construction needs.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">💰</div>
+                <div class="post-content">
+                    <span class="post-category">Industry News</span>
+                    <h3>2025 Heavy Equipment Market Trends in Australia</h3>
+                    <div class="post-meta">December 8, 2024 • 5 min read</div>
+                    <p>Explore the latest market trends, pricing forecasts, and industry developments shaping the equipment rental sector.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">⚡</div>
+                <div class="post-content">
+                    <span class="post-category">Best Practices</span>
+                    <h3>Maximizing Equipment Utilization: A Contractor's Handbook</h3>
+                    <div class="post-meta">December 5, 2024 • 7 min read</div>
+                    <p>Proven techniques to improve equipment utilization rates and reduce idle time on your construction sites.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">🏗️</div>
+                <div class="post-content">
+                    <span class="post-category">Case Studies</span>
+                    <h3>How BuildCorp Saved $500K Using AI-Powered Equipment Selection</h3>
+                    <div class="post-meta">December 3, 2024 • 10 min read</div>
+                    <p>Real-world case study of a major contractor leveraging Krayn's AI recommendations to optimize fleet costs.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">🔧</div>
+                <div class="post-content">
+                    <span class="post-category">Equipment Guides</span>
+                    <h3>Bulldozer vs Grader: Which Equipment Does Your Project Need?</h3>
+                    <div class="post-meta">November 28, 2024 • 5 min read</div>
+                    <p>Clear comparison guide to help you make the right equipment choice for earthmoving and grading work.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">📈</div>
+                <div class="post-content">
+                    <span class="post-category">Cost Optimization</span>
+                    <h3>Understanding Total Lifecycle Costs: Beyond the Rental Rate</h3>
+                    <div class="post-meta">November 25, 2024 • 8 min read</div>
+                    <p>Complete breakdown of hidden costs in equipment rentals and how to calculate true total cost of ownership.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">🎯</div>
+                <div class="post-content">
+                    <span class="post-category">Best Practices</span>
+                    <h3>Multi-Site Project Management: Equipment Coordination Tips</h3>
+                    <div class="post-meta">November 22, 2024 • 6 min read</div>
+                    <p>Expert strategies for managing equipment across multiple construction sites efficiently and cost-effectively.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">🤖</div>
+                <div class="post-content">
+                    <span class="post-category">Industry News</span>
+                    <h3>AI in Construction: How Technology is Transforming Equipment Rental</h3>
+                    <div class="post-meta">November 20, 2024 • 7 min read</div>
+                    <p>Discover how artificial intelligence and machine learning are revolutionizing the equipment rental industry.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-image">🛡️</div>
+                <div class="post-content">
+                    <span class="post-category">Best Practices</span>
+                    <h3>Equipment Insurance: What Every Contractor Should Know</h3>
+                    <div class="post-meta">November 18, 2024 • 5 min read</div>
+                    <p>Essential guide to understanding insurance coverage, liability, and protecting your business when renting equipment.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="resources-section">
+        <div class="container">
+            <h2 class="section-title">Free <span class="gradient-text">Resources</span></h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">📋</div>
+                    <div class="resource-content">
+                        <h3>Equipment Rental Checklist</h3>
+                        <p>Comprehensive 20-point checklist to ensure you get the right equipment at the best price every time.</p>
+                        <a href="#" class="read-more">Download PDF →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">💡</div>
+                    <div class="resource-content">
+                        <h3>ROI Calculator Spreadsheet</h3>
+                        <p>Calculate the return on investment for renting vs buying equipment with our easy-to-use Excel template.</p>
+                        <a href="#" class="read-more">Download Excel →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">📊</div>
+                    <div class="resource-content">
+                        <h3>2025 Equipment Pricing Guide</h3>
+                        <p>Detailed pricing benchmarks for 50+ equipment types across all major Australian cities.</p>
+                        <a href="#" class="read-more">Download Guide →</a>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-icon">🎓</div>
+                    <div class="resource-content">
+                        <h3>Contract Negotiation eBook</h3>
+                        <p>Expert strategies for negotiating better rental terms, rates, and conditions with suppliers.</p>
+                        <a href="#" class="read-more">Download eBook →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Signup -->
+    <div class="container">
+        <div class="newsletter">
+            <h3>Stay Updated</h3>
+            <p>Get weekly insights, industry news, and exclusive tips delivered to your inbox</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

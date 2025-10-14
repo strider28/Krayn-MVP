@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --accent: #8b5cf6;
+            --bg-darker: #020617;
+            --bg-dark: #0f172a;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            min-width: 1200px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 150px 2rem 4rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-description {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-period {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .checkmark {
+            color: var(--success);
+            font-weight: 900;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .transparency-section {
+            background: rgba(15, 23, 42, 0.3);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .info-box {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+
+        .info-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-table {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 3rem;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: rgba(14, 165, 233, 0.1);
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KRAYN</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Equipment</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="about.html">About</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Simple, <span class="gradient-text">Transparent</span> Pricing</h1>
+        <p>No hidden fees. No surprises. Just honest pricing that helps you save.</p>
+    </div>
+
+    <div class="container">
+        <div class="pricing-grid">
+            <!-- Individual Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Individual</div>
+                <div class="plan-description">Perfect for small contractors and one-time projects</div>
+                <div class="plan-price">Free</div>
+                <div class="plan-period">Forever</div>
+                <ul class="plan-features">
+                    <li><span class="checkmark">✓</span> Search & compare prices</li>
+                    <li><span class="checkmark">✓</span> Access to all suppliers</li>
+                    <li><span class="checkmark">✓</span> Basic AI recommendations</li>
+                    <li><span class="checkmark">✓</span> Up to 5 RFQs per month</li>
+                    <li><span class="checkmark">✓</span> Email support</li>
+                    <li><span class="checkmark">✓</span> Mobile app access</li>
+                </ul>
+                <button class="btn btn-secondary">Get Started</button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card popular">
+                <div class="popular-badge">MOST POPULAR</div>
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-description">For contractors and organizations managing multiple projects</div>
+                <div class="plan-price">$99</div>
+                <div class="plan-period">per month</div>
+                <ul class="plan-features">
+                    <li><span class="checkmark">✓</span> Everything in Individual</li>
+                    <li><span class="checkmark">✓</span> Advanced AI recommendations</li>
+                    <li><span class="checkmark">✓</span> Unlimited RFQs</li>
+                    <li><span class="checkmark">✓</span> Priority supplier matching</li>
+                    <li><span class="checkmark">✓</span> Performance analytics</li>
+                    <li><span class="checkmark">✓</span> 24/7 phone support</li>
+                    <li><span class="checkmark">✓</span> Dedicated account manager</li>
+                    <li><span class="checkmark">✓</span> Custom API integration</li>
+                    <li><span class="checkmark">✓</span> Multi-user accounts</li>
+                    <li><span class="checkmark">✓</span> Advanced reporting</li>
+                    <li><span class="checkmark">✓</span> Bulk pricing discounts</li>
+                    <li><span class="checkmark">✓</span> Custom contract terms</li>
+                </ul>
+                <button class="btn btn-primary">Start Free Trial</button>
+            </div>
+        </div>
+
+        <!-- Transparency Section -->
+        <div class="transparency-section">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">How We Make Money</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">100% transparent. No hidden fees.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Our Commission Model</h3>
+                <p>Krayn earns a small commission from suppliers when you book equipment through our platform. This commission is <strong>already built into the supplier's price</strong>—you don't pay anything extra.</p>
+                <p>In fact, our users save an average of <strong>15%</strong> compared to booking directly because:</p>
+                <ul style="color: var(--text-muted); line-height: 2; margin-left: 1.5rem;">
+                    <li>Suppliers compete for your business with competitive pricing</li>
+                    <li>You get access to bulk discounts and special offers</li>
+                    <li>Our AI finds the most cost-effective options for your needs</li>
+                    <li>You avoid markup from brokers and middlemen</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>Price Comparison Example</h3>
+                <p style="margin-bottom: 2rem;">Here's how Krayn pricing compares to traditional rental methods:</p>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Excavator (2 months)</th>
+                                <th>Time to Book</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Traditional (Direct Call)</strong></td>
+                                <td>$12,400</td>
+                                <td>3-5 days</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Through Broker</strong></td>
+                                <td>$13,200</td>
+                                <td>1-2 days</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--success);">Krayn Platform</strong></td>
+                                <td><strong style="color: var(--success);">$10,400</strong></td>
+                                <td><strong style="color: var(--success);">10 minutes</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top: 1.5rem; color: var(--success); font-weight: 600;">💰 Save $2,000 and 4+ days with Krayn</p>
+            </div>
+
+            <div class="info-box">
+                <h3>No Hidden Fees Guarantee</h3>
+                <p>What you see is what you pay. Our platform displays:</p>
+                <ul style="color: var(--text-muted); line-height: 2; margin-left: 1.5rem;">
+                    <li>✓ Total rental cost (no surprises)</li>
+                    <li>✓ Transport and delivery fees</li>
+                    <li>✓ Insurance coverage details</li>
+                    <li>✓ Maintenance inclusions</li>
+                    <li>✓ All applicable taxes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div style="margin-top: 4rem;">
+            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 3rem;">Pricing <span class="gradient-text">FAQs</span></h2>
+            
+            <div class="info-box">
+                <h3>Can I try Krayn before committing?</h3>
+                <p>Yes! The Individual plan is free forever. For Enterprise features, we offer a 14-day free trial with no credit card required.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Can I cancel anytime?</h3>
+                <p>Absolutely. You can cancel your subscription at any time. No long-term contracts, no cancellation fees.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Do rental prices on Krayn include your commission?</h3>
+                <p>Yes, the prices shown are what you'll pay. Our commission is already included and comes from the supplier's side—you never pay extra for using Krayn.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

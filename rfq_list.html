@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RFQs — Krayn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0ea5e9;
+      --accent: #8b5cf6;
+      --bg-darker: #020617;
+      --bg-dark: #0f172a;
+      --text-light: #f1f5f9;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-darker);
+      color: var(--text-light);
+      min-width: 1200px;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem 2rem;
+    }
+
+    .site-header > div:first-child {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .brand {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .searchbar {
+      flex: 1;
+      max-width: 500px;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .searchbar input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .searchbar input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+      margin-left: auto;
+    }
+
+    nav a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    nav a.active {
+      color: var(--primary);
+      background: rgba(14, 165, 233, 0.1);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+      padding: 0.5rem 1.5rem !important;
+      border-radius: 8px !important;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3) !important;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 120px 2rem 4rem;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    .small {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .filters {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .filter-group select {
+      padding: 0.7rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-box {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .rfq-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .rfq-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(14, 165, 233, 0.2);
+    }
+
+    .rfq-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .rfq-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .rfq-meta {
+      display: flex;
+      gap: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .status-badge {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .status-open {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .status-closed {
+      background: rgba(100, 116, 139, 0.1);
+      color: var(--text-muted);
+    }
+
+    .status-awarded {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--accent);
+    }
+
+    .rfq-details {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .detail-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .detail-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .rfq-equipment {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .equipment-header {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .equipment-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .equipment-tag {
+      background: rgba(14, 165, 233, 0.1);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .rfq-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-light);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .quote-count {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      padding: 1rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .ai-badge {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--accent);
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <div class="brand">Krayn</div>
+      <form id="globalSearch" class="searchbar" action="search.html">
+        <input id="q" name="q" type="search" placeholder="Search equipment..." />
+        <button class="btn" type="submit">Search</button>
+      </form>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="search.html">Search</a>
+        <a class="active" href="rfq-list.html">RFQs</a>
+        <a href="rfq.html">New RFQ</a>
+        <a href="suppliers.html">Suppliers</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="login.html" class="login-btn">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>All RFQs</h2>
+    <p class="small">Suppliers can quote on all or selected machines per RFQ. Each RFQ may span multiple dates and locations; includes delivery fees & payment terms. Krayn AI suggests best quotes based on lifecycle cost and potential bulk order benefits.</p>
+
+    <!-- Auth Notice -->
+    <div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 15px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">
+      <span style="font-size: 1.1rem; font-weight: 600;">🔐 Login or Register to view full RFQ details and submit bids</span>
+      <div style="margin-top: 1rem;">
+        <a href="login.html" style="color: var(--primary); text-decoration: underline; font-weight: 600; margin: 0 1rem;">Sign In</a>
+        <span style="color: var(--text-muted);">or</span>
+        <a href="register.html" style="color: var(--primary); text-decoration: underline; font-weight: 600; margin: 0 1rem;">Create Account</a>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-label">Total RFQs</div>
+        <div class="stat-value">24</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Open RFQs</div>
+        <div class="stat-value">8</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Quotes Received</div>
+        <div class="stat-value">156</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Avg. Response Time</div>
+        <div class="stat-value">18hrs</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-group">
+        <label>Status</label>
+        <select onchange="filterRFQs()">
+          <option value="all">All Status</option>
+          <option value="open">Open</option>
+          <option value="pending">Pending Review</option>
+          <option value="awarded">Awarded</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Sort By</label>
+        <select onchange="sortRFQs()">
+          <option value="recent">Most Recent</option>
+          <option value="oldest">Oldest First</option>
+          <option value="quotes">Most Quotes</option>
+          <option value="value">Highest Value</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Time Period</label>
+        <select>
+          <option value="all">All Time</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="quarter">This Quarter</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- RFQ List -->
+    <div id="rfqList" class="list">
+      
+      <!-- RFQ Card 1 -->
+      <div class="rfq-card" onclick="viewRFQ(1)">
+        <div class="rfq-header">
+          <div>
+            <div class="rfq-title">Highway Construction Project - Northern Section</div>
+            <div class="rfq-meta">
+              <span>📋 RFQ-2025-001</span>
+              <span>📅 Posted: 2 days ago</span>
+              <span>⏰ Closes: 3 days</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <span class="status-badge status-open">Open</span>
+            <span class="ai-badge">🤖 AI Recommended</span>
+          </div>
+        </div>
+
+        <div class="rfq-details">
+          <div class="detail-item">
+            <div class="detail-label">Sites</div>
+            <div class="detail-value">3 Locations</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Equipment Items</div>
+            <div class="detail-value">12 Items</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Budget Range</div>
+            <div class="detail-value">$250k - $500k</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Duration</div>
+            <div class="detail-value">6 months</div>
+          </div>
+        </div>
+
+        <div class="rfq-equipment">
+          <div class="equipment-header">Equipment Required:</div>
+          <div class="equipment-list">
+            <span class="equipment-tag">3.5T Excavator (×3)</span>
+            <span class="equipment-tag">Bulldozer CAT D8 (×2)</span>
+            <span class="equipment-tag">Motor Grader (×2)</span>
+            <span class="equipment-tag">Wheel Loader (×2)</span>
+            <span class="equipment-tag">Compactor (×3)</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="quote-count">
+            <span>📊</span>
+            <span><strong>24 Quotes Received</strong></span>
+            <span style="color: var(--text-muted);">• Best: $387,500</span>
+          </div>
+          <div class="rfq-actions">
+            <button class="btn-secondary" onclick="event.stopPropagation(); compareQuotes(1)">Compare Quotes</button>
+            <button class="btn" onclick="event.stopPropagation(); viewDetails(1)">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RFQ Card 2 -->
+      <div class="rfq-card" onclick="viewRFQ(2)">
+        <div class="rfq-header">
+          <div>
+            <div class="rfq-title">Commercial Building Development - Melbourne CBD</div>
+            <div class="rfq-meta">
+              <span>📋 RFQ-2025-002</span>
+              <span>📅 Posted: 1 week ago</span>
+              <span>⏰ Under Review</span>
+            </div>
+          </div>
+          <span class="status-badge status-pending">Pending Review</span>
+        </div>
+
+        <div class="rfq-details">
+          <div class="detail-item">
+            <div class="detail-label">Sites</div>
+            <div class="detail-value">1 Location</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Equipment Items</div>
+            <div class="detail-value">8 Items</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Budget Range</div>
+            <div class="detail-value">$100k - $250k</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Duration</div>
+            <div class="detail-value">4 months</div>
+          </div>
+        </div>
+
+        <div class="rfq-equipment">
+          <div class="equipment-header">Equipment Required:</div>
+          <div class="equipment-list">
+            <span class="equipment-tag">Mobile Crane 50T (×1)</span>
+            <span class="equipment-tag">Scissor Lift 7.9m (×4)</span>
+            <span class="equipment-tag">Telehandler 9m (×2)</span>
+            <span class="equipment-tag">Generator 25kVA (×1)</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="quote-count">
+            <span>📊</span>
+            <span><strong>18 Quotes Received</strong></span>
+            <span style="color: var(--text-muted);">• Best: $178,200</span>
+          </div>
+          <div class="rfq-actions">
+            <button class="btn-secondary" onclick="event.stopPropagation(); compareQuotes(2)">Compare Quotes</button>
+            <button class="btn" onclick="event.stopPropagation(); viewDetails(2)">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RFQ Card 3 -->
+      <div class="rfq-card" onclick="viewRFQ(3)">
+        <div class="rfq-header">
+          <div>
+            <div class="rfq-title">Infrastructure Upgrade - Sydney West</div>
+            <div class="rfq-meta">
+              <span>📋 RFQ-2025-003</span>
+              <span>📅 Posted: 3 weeks ago</span>
+              <span>✅ Contract Awarded</span>
+            </div>
+          </div>
+          <span class="status-badge status-awarded">Awarded</span>
+        </div>
+
+        <div class="rfq-details">
+          <div class="detail-item">
+            <div class="detail-label">Sites</div>
+            <div class="detail-value">2 Locations</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Equipment Items</div>
+            <div class="detail-value">15 Items</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Final Cost</div>
+            <div class="detail-value">$495,800</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Awarded To</div>
+            <div class="detail-value">Apex Equipment</div>
+          </div>
+        </div>
+
+        <div class="rfq-equipment">
+          <div class="equipment-header">Equipment Awarded:</div>
+          <div class="equipment-list">
+            <span class="equipment-tag">8T Excavator (×2)</span>
+            <span class="equipment-tag">Bulldozer (×2)</span>
+            <span class="equipment-tag">Motor Grader (×1)</span>
+            <span class="equipment-tag">Wheel Loader (×3)</span>
+            <span class="equipment-tag">Compactor (×4)</span>
+            <span class="equipment-tag">Generator (×3)</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="quote-count">
+            <span>✅</span>
+            <span><strong>32 Quotes Received</strong></span>
+            <span style="color: var(--success);">• Awarded: $495,800 (saved $67k)</span>
+          </div>
+          <div class="rfq-actions">
+            <button class="btn-secondary" onclick="event.stopPropagation(); viewContract(3)">View Contract</button>
+            <button class="btn" onclick="event.stopPropagation(); viewDetails(3)">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RFQ Card 4 -->
+      <div class="rfq-card" onclick="viewRFQ(4)">
+        <div class="rfq-header">
+          <div>
+            <div class="rfq-title">Residential Development - Brisbane North</div>
+            <div class="rfq-meta">
+              <span>📋 RFQ-2025-004</span>
+              <span>📅 Posted: 5 days ago</span>
+              <span>⏰ Closes: 1 day</span>
+            </div>
+          </div>
+          <span class="status-badge status-open">Open</span>
+        </div>
+
+        <div class="rfq-details">
+          <div class="detail-item">
+            <div class="detail-label">Sites</div>
+            <div class="detail-value">1 Location</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Equipment Items</div>
+            <div class="detail-value">6 Items</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Budget Range</div>
+            <div class="detail-value">$50k - $100k</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Duration</div>
+            <div class="detail-value">3 months</div>
+          </div>
+        </div>
+
+        <div class="rfq-equipment">
+          <div class="equipment-header">Equipment Required:</div>
+          <div class="equipment-list">
+            <span class="equipment-tag">1T Mini Excavator (×2)</span>
+            <span class="equipment-tag">Skid Steer Loader (×2)</span>
+            <span class="equipment-tag">Concrete Saw (×1)</span>
+            <span class="equipment-tag">Compactor (×1)</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="quote-count">
+            <span>📊</span>
+            <span><strong>11 Quotes Received</strong></span>
+            <span style="color: var(--text-muted);">• Best: $72,400</span>
+          </div>
+          <div class="rfq-actions">
+            <button class="btn-secondary" onclick="event.stopPropagation(); compareQuotes(4)">Compare Quotes</button>
+            <button class="btn" onclick="event.stopPropagation(); viewDetails(4)">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RFQ Card 5 -->
+      <div class="rfq-card" onclick="viewRFQ(5)">
+        <div class="rfq-header">
+          <div>
+            <div class="rfq-title">Mining Site Equipment - Western Australia</div>
+            <div class="rfq-meta">
+              <span>📋 RFQ-2025-005</span>
+              <span>📅 Posted: 1 month ago</span>
+              <span>🔒 Closed</span>
+            </div>
+          </div>
+          <span class="status-badge status-closed">Closed</span>
+        </div>
+
+        <div class="rfq-details">
+          <div class="detail-item">
+            <div class="detail-label">Sites</div>
+            <div class="detail-value">4 Locations</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Equipment Items</div>
+            <div class="detail-value">20 Items</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Budget Range</div>
+            <div class="detail-value">$500k+</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">No Award</div>
+          </div>
+        </div>
+
+        <div class="rfq-equipment">
+          <div class="equipment-header">Equipment Requested:</div>
+          <div class="equipment-list">
+            <span class="equipment-tag">Heavy Excavators (×5)</span>
+            <span class="equipment-tag">Bulldozers (×4)</span>
+            <span class="equipment-tag">Dump Trucks (×6)</span>
+            <span class="equipment-tag">Wheel Loaders (×5)</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="quote-count" style="opacity: 0.6;">
+            <span>📊</span>
+            <span><strong>8 Quotes Received</strong></span>
+            <span style="color: var(--text-muted);">• RFQ Closed</span>
+          </div>
+          <div class="rfq-actions">
+            <button class="btn-secondary" onclick="event.stopPropagation(); viewHistory(5)">View History</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>© 2025 Krayn. All rights reserved.</footer>
+
+  <script>
+    function viewRFQ(id) {
+      alert(`Opening RFQ details for RFQ #${id}...`);
+    }
+
+    function viewDetails(id) {
+      alert(`📄 Viewing detailed information for RFQ #${id}\n\nIncludes:\n• Full equipment specifications\n• Site locations & maps\n• Timeline & milestones\n• Terms & conditions`);
+    }
+
+    function compareQuotes(id) {
+      alert(`📊 Opening quote comparison for RFQ #${id}\n\nCompare:\n• Total lifecycle costs\n• Supplier ratings\n• Delivery terms\n• Payment options\n• AI recommendations`);
+    }
+
+    function viewContract(id) {
+      alert(`📝 Opening contract for RFQ #${id}...`);
+    }
+
+    function viewHistory(id) {
+      alert(`📋 Viewing history for RFQ #${id}\n\nIncludes:\n• Quote submissions\n• Communications\n• Timeline of events\n• Final outcome`);
+    }
+
+    function filterRFQs() {
+      alert('🔍 Filtering RFQs by selected status...');
+    }
+
+    function sortRFQs() {
+      alert('📊 Sorting RFQs by selected criteria...');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Quote - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            min-width: 1200px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--text-light);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Form Sections */
+        .form-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .required {
+            color: var(--secondary);
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .input-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .input-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Site Management */
+        .site-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .site-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .site-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .site-badge {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Equipment Items */
+        .equipment-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .equipment-item-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .item-number {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .remove-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .add-btn {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px dashed var(--primary);
+            color: var(--primary);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            background: rgba(14, 165, 233, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding-top: 1rem;
+        }
+
+        /* Multi-select checkbox */
+        .checkbox-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KRAYN</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Equipment</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="rfq.html">Request Quote</a>
+                <a href="#">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Multi-Site Request for Quote</h1>
+            <p class="page-subtitle">Get competitive quotes for multiple equipment across multiple sites and dates</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('builder')">RFQ Builder</button>
+            <button class="tab" onclick="switchTab('preview')">Preview & Submit</button>
+        </div>
+
+        <form id="rfqForm">
+            <!-- RFQ Builder Tab -->
+            <div id="builderTab">
+                <!-- Project Details -->
+                <div class="form-card">
+                    <h2 class="section-title">📋 Project Details</h2>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Project Name <span class="required">*</span></label>
+                            <input type="text" placeholder="e.g., Highway Construction Project" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Company Name <span class="required">*</span></label>
+                            <input type="text" placeholder="Your Company Pty Ltd" required>
+                        </div>
+                    </div>
+                    <div class="form-row single">
+                        <div class="input-group">
+                            <label>Project Description</label>
+                            <textarea placeholder="Brief description of your project..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sites Section -->
+                <div class="form-card">
+                    <h2 class="section-title">📍 Project Sites</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Add all sites where you need equipment. Each site can have different equipment requirements and dates.</p>
+                    
+                    <div class="site-list" id="sitesList">
+                        <!-- Site 1 -->
+                        <div class="site-item" data-site-id="1">
+                            <div class="site-header">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <span class="site-name">Site 1</span>
+                                    <span class="site-badge" id="site1Count">0 items</span>
+                                </div>
+                                <button type="button" class="remove-btn" onclick="removeSite(1)" style="display: none;">Remove Site</button>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label>Site Name/Location <span class="required">*</span></label>
+                                    <input type="text" placeholder="e.g., Sydney North Highway Section A" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Site Address <span class="required">*</span></label>
+                                    <input type="text" placeholder="Full address for delivery" required>
+                                </div>
+                            </div>
+
+                            <!-- Equipment for this site -->
+                            <div style="margin-top: 2rem;">
+                                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Equipment Requirements for this Site</h3>
+                                <div class="equipment-items" id="equipmentSite1">
+                                    <!-- Equipment Item 1 -->
+                                    <div class="equipment-item-form" data-item-id="1">
+                                        <div class="item-header">
+                                            <div class="item-number">1</div>
+                                            <button type="button" class="remove-btn" onclick="removeEquipment(1, 1)" style="display: none;">Remove</button>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="input-group">
+                                                <label>Equipment Type <span class="required">*</span></label>
+                                                <select required>
+                                                    <option value="">Select equipment</option>
+                                                    <option value="excavator">Excavator</option>
+                                                    <option value="bulldozer">Bulldozer</option>
+                                                    <option value="crane">Crane</option>
+                                                    <option value="grader">Motor Grader</option>
+                                                    <option value="loader">Wheel Loader</option>
+                                                    <option value="compactor">Compactor</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label>Quantity <span class="required">*</span></label>
+                                                <input type="number" min="1" value="1" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="input-group">
+                                                <label>Start Date <span class="required">*</span></label>
+                                                <input type="date" required>
+                                            </div>
+                                            <div class="input-group">
+                                                <label>End Date <span class="required">*</span></label>
+                                                <input type="date" required>
+                                                <div class="input-hint">Duration will be calculated automatically</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="input-group">
+                                                <label>Specifications</label>
+                                                <input type="text" placeholder="e.g., 30-ton, 300 HP">
+                                                <div class="input-hint">Capacity, power, size requirements</div>
+                                            </div>
+                                            <div class="input-group">
+                                                <label>Usage Hours/Day</label>
+                                                <input type="number" min="1" max="24" placeholder="8">
+                                            </div>
+                                        </div>
+                                        <div class="form-row single">
+                                            <div class="input-group">
+                                                <label>Special Requirements for this Item</label>
+                                                <textarea placeholder="Any specific requirements for this equipment..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-btn" onclick="addEquipmentToSite(1)">+ Add Equipment to Site 1</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addSite()">+ Add Another Site</button>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-card">
+                    <h2 class="section-title">👤 Contact Information</h2>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <input type="text" placeholder="John Smith" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Job Title</label>
+                            <input type="text" placeholder="Project Manager">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" placeholder="john@company.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone <span class="required">*</span></label>
+                            <input type="tel" placeholder="+61 4XX XXX XXX" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vendor Bidding Options -->
+                <div class="form-card">
+                    <h2 class="section-title">🎯 Vendor Bidding Options</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Choose how vendors can submit quotes for your RFQ</p>
+                    
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="allowPartial" checked>
+                            <label for="allowPartial" style="margin: 0; font-weight: 500;">Allow vendors to quote on individual items</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="allowBundle" checked>
+                            <label for="allowBundle" style="margin: 0; font-weight: 500;">Allow vendors to quote on complete package</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="allowSiteSpecific" checked>
+                            <label for="allowSiteSpecific" style="margin: 0; font-weight: 500;">Allow vendors to quote per site</label>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <div class="input-group">
+                            <label>Quote Response Timeframe</label>
+                            <select>
+                                <option value="urgent">Urgent (24 hours)</option>
+                                <option value="standard" selected>Standard (48 hours)</option>
+                                <option value="flexible">Flexible (1 week)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Requirements -->
+                <div class="form-card">
+                    <h2 class="section-title">⚙️ Additional Requirements</h2>
+                    <div class="form-row single">
+                        <div class="input-group">
+                            <label>Special Requirements (Applies to All Equipment)</label>
+                            <textarea placeholder="Include insurance needs, operator requirements, delivery preferences, maintenance terms, safety certifications, etc."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Total Budget Range (Optional)</label>
+                            <select>
+                                <option value="">Prefer not to disclose</option>
+                                <option value="50k">Under $50,000</option>
+                                <option value="100k">$50,000 - $100,000</option>
+                                <option value="250k">$100,000 - $250,000</option>
+                                <option value="500k">$250,000 - $500,000</option>
+                                <option value="500k+">$500,000+</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Preferred Payment Terms</label>
+                            <select>
+                                <option value="monthly">Monthly</option>
+                                <option value="upfront">Upfront</option>
+                                <option value="milestone">Milestone-based</option>
+                                <option value="net30">Net 30</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="form-card">
+                    <h2 class="section-title">📊 RFQ Summary</h2>
+                    <div class="summary-box">
+                        <div class="summary-item">
+                            <span>Total Sites:</span>
+                            <strong id="totalSites">1</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Equipment Items:</span>
+                            <strong id="totalItems">1</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Target Suppliers:</span>
+                            <strong>Hundreds of suppliers will receive this RFQ</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Vendors Can Quote On:</span>
+                            <strong id="quotingOptions">Individual items, bundles, or per site</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Expected Response:</span>
+                            <strong>Within 48 hours</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">Save as Draft</button>
+                    <button type="button" class="btn btn-primary" onclick="switchTab('preview')">Preview RFQ →</button>
+                </div>
+            </div>
+
+            <!-- Preview Tab -->
+            <div id="previewTab" style="display: none;">
+                <div class="form-card">
+                    <h2 class="section-title">📄 RFQ Preview</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Review your RFQ before sending to suppliers. You can go back to make changes.</p>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem;">Project Overview</h3>
+                        <p style="color: var(--text-muted); line-height: 1.7;">
+                            Your RFQ will be sent to <strong style="color: var(--primary);">hundreds of verified suppliers</strong> who can quote on:<br>
+                            • Individual equipment items<br>
+                            • Complete packages for specific sites<br>
+                            • Full project bundles<br><br>
+                            Suppliers will have <strong>48 hours</strong> to submit their best competitive quotes.
+                        </p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(14, 165, 233, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1rem;">💡 What Happens Next?</h3>
+                        <ol style="color: var(--text-muted); line-height: 2; margin-left: 1.5rem;">
+                            <li>Your RFQ is distributed to all relevant suppliers</li>
+                            <li>Suppliers review and submit quotes for items they can fulfill</li>
+                            <li>You receive real-time notifications as quotes arrive</li>
+                            <li>Compare quotes side-by-side in your dashboard</li>
+                            <li>Select the best quotes and award contracts instantly</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="switchTab('builder')">← Back to Edit</button>
+                    <button type="submit" class="btn btn-primary">Submit RFQ to Suppliers</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let siteCount = 1;
+        let equipmentCounters = {1: 1};
+
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'builder') {
+                document.getElementById('builderTab').style.display = 'block';
+                document.getElementById('previewTab').style.display = 'none';
+                tabs[0].classList.add('active');
+            } else {
+                document.getElementById('builderTab').style.display = 'none';
+                document.getElementById('previewTab').style.display = 'block';
+                tabs[1].classList.add('active');
+            }
+        }
+
+        function addSite() {
+            siteCount++;
+            equipmentCounters[siteCount] = 1;
+            
+            const sitesList = document.getElementById('sitesList');
+            const newSite = document.createElement('div');
+            newSite.className = 'site-item';
+            newSite.setAttribute('data-site-id', siteCount);
+            newSite.innerHTML = `
+                <div class="site-header">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="site-name">Site ${siteCount}</span>
+                        <span class="site-badge" id="site${siteCount}Count">1 item</span>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeSite(${siteCount})">Remove Site</button>
+                </div>
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Site Name/Location <span class="required">*</span></label>
+                        <input type="text" placeholder="e.g., Melbourne East Section B" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Site Address <span class="required">*</span></label>
+                        <input type="text" placeholder="Full address for delivery" required>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Equipment Requirements for this Site</h3>
+                    <div class="equipment-items" id="equipmentSite${siteCount}">
+                        ${getEquipmentTemplate(siteCount, 1)}
+                    </div>
+                    <button type="button" class="add-btn" onclick="addEquipmentToSite(${siteCount})">+ Add Equipment to Site ${siteCount}</button>
+                </div>
+            `;
+            sitesList.appendChild(newSite);
+            updateSummary();
+            
+            // Show remove button on site 1 if there are multiple sites
+            if (siteCount > 1) {
+                document.querySelector('[data-site-id="1"] .remove-btn').style.display = 'block';
+            }
+        }
+
+        function removeSite(siteId) {
+            if (siteCount <= 1) return;
+            
+            const site = document.querySelector(`[data-site-id="${siteCount}"]`);
+            if (site) {
+                site.remove();
+                delete equipmentCounters[siteId];
+                siteCount--;
+                updateSummary();
+                
+                // Hide remove button on site 1 if only one site remains
+                if (siteCount === 1) {
+                    document.querySelector('[data-site-id="1"] .remove-btn').style.display = 'none';
+                }
+            }
+        }
+
+        function addEquipmentToSite(siteId)

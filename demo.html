@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Demo - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --accent: #8b5cf6;
+            --bg-darker: #020617;
+            --bg-dark: #0f172a;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-width: 1200px;
+        }
+
+        .demo-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .demo-visual {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .step-card:nth-child(1) { animation-delay: 0.2s; }
+        .step-card:nth-child(2) { animation-delay: 0.4s; }
+        .step-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .problem-solution {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-box, .solution-box {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .problem-box {
+            border-left: 4px solid #ef4444;
+        }
+
+        .solution-box {
+            border-left: 4px solid var(--success);
+        }
+
+        .problem-box h3 {
+            color: #ef4444;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .solution-box h3 {
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .problem-box ul, .solution-box ul {
+            list-style: none;
+            line-height: 2;
+        }
+
+        .problem-box li::before {
+            content: "❌ ";
+            color: #ef4444;
+        }
+
+        .solution-box li::before {
+            content: "✓ ";
+            color: var(--success);
+            font-weight: 900;
+        }
+
+        .stats-showcase {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .stat-box:nth-child(1) { animation-delay: 0.2s; }
+        .stat-box:nth-child(2) { animation-delay: 0.4s; }
+        .stat-box:nth-child(3) { animation-delay: 0.6s; }
+        .stat-box:nth-child(4) { animation-delay: 0.8s; }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .mockup-browser {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 2rem auto;
+            max-width: 1000px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .browser-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .browser-content {
+            padding: 2rem;
+            min-height: 400px;
+        }
+
+        .search-demo {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-demo input {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .result-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .result-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .result-price {
+            text-align: right;
+        }
+
+        .price-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-color: var(--primary);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s;
+            z-index: 1001;
+        }
+
+        .slide-indicator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .feature-showcase {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-demo {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: left;
+        }
+
+        .feature-demo h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animated-icon {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-indicator" id="slideIndicator">1 / 10</div>
+
+    <div class="demo-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1><span class="gradient-text">KRAYN</span></h1>
+                <p class="subtitle">Australia's First AI-Powered Heavy Equipment Aggregator</p>
+                <div style="font-size: 5rem; margin: 2rem 0;" class="animated-icon">🚜</div>
+                <p style="color: var(--text-muted); font-size: 1.2rem;">Revolutionizing the $10B Equipment Rental Industry</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Problem -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Problem</h2>
+                <p class="subtitle">The heavy equipment rental industry is broken</p>
+                <div class="problem-solution">
+                    <div class="problem-box">
+                        <h3>❌ Current Challenges</h3>
+                        <ul>
+                            <li>Fragmented supplier network - difficult to compare</li>
+                            <li>Opaque pricing with hidden fees</li>
+                            <li>Time-consuming procurement (3-5 days)</li>
+                            <li>Manual RFQ processes</li>
+                            <li>No real-time availability data</li>
+                            <li>Rigid, inflexible contracts</li>
+                            <li>Low equipment utilization rates (60-70%)</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        →
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Solution -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The <span class="gradient-text">Krayn</span> Solution</h2>
+                <p class="subtitle">AI-powered equipment aggregator platform</p>
+                <div class="problem-solution">
+                    <div style="display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                        💡
+                    </div>
+                    <div class="solution-box">
+                        <h3>✓ Krayn Benefits</h3>
+                        <ul>
+                            <li>Aggregate 200+ suppliers in one platform</li>
+                            <li>100% transparent pricing - no hidden fees</li>
+                            <li>Book equipment in 10 minutes</li>
+                            <li>Automated RFQ & bidding system</li>
+                            <li>Real-time inventory & pricing updates</li>
+                            <li>Flexible, customizable contracts</li>
+                            <li>Increase utilization to 85-90%</li>
+                            <li>Save contractors 15-20% on average</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: How It Works -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>How <span class="gradient-text">Krayn</span> Works</h2>
+                <p class="subtitle">Simple. Fast. Intelligent.</p>
+                <div class="step-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Search & Compare</h3>
+                        <p>Enter your equipment needs. Our AI instantly searches 200+ suppliers and aggregates live pricing.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>AI Recommendations</h3>
+                        <p>Get personalized recommendations based on cost, location, ratings, and project requirements.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Book Instantly</h3>
+                        <p>Select equipment, automated contracts generated, book in minutes with instant confirmation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Platform Demo -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Platform <span class="gradient-text">Demo</span></h2>
+                <p class="subtitle">See the magic in action</p>
+                <div class="mockup-browser">
+                    <div class="browser-header">
+                        <div class="browser-dot"></div>
+                        <div class="browser-dot"></div>
+                        <div class="browser-dot"></div>
+                    </div>
+                    <div class="browser-content">
+                        <div class="search-demo">
+                            <input type="text" value="Excavator, Sydney, 2 months" readonly>
+                            <button class="nav-btn" style="position: static; transform: none;">Search</button>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">🚜</div>
+                            <div class="result-info">
+                                <h4>CAT 320 Hydraulic Excavator</h4>
+                                <div class="result-meta">30-ton • 300 HP • CoatesHire • 15km away • ⭐ 4.8 (142 reviews)</div>
+                                <div style="margin-top: 0.5rem;"><span style="background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✓ Available Now</span></div>
+                            </div>
+                            <div class="result-price">
+                                <div class="price-amount">$5,200</div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem;">/month</div>
+                                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--success);">Save $1,300</div>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">🚜</div>
+                            <div class="result-info">
+                                <h4>Komatsu PC300 Excavator</h4>
+                                <div class="result-meta">28-ton • 280 HP • Kennards • 22km away • ⭐ 4.6 (89 reviews)</div>
+                                <div style="margin-top: 0.5rem;"><span style="background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">✓ Available Now</span></div>
+                            </div>
+                            <div class="result-price">
+                                <div class="price-amount">$5,450</div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem;">/month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Key Features -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key <span class="gradient-text">Features</span></h2>
+                <p class="subtitle">Technology that transforms equipment rental</p>
+                <div class="feature-showcase">
+                    <div class="feature-demo">
+                        <h4>🤖 AI-Powered Matching</h4>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Machine learning algorithms analyze cost, location, ratings, specs, and utilization patterns to recommend optimal equipment.</p>
+                    </div>
+                    <div class="feature-demo">
+                        <h4>💰 Transparent Pricing</h4>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Complete cost breakdown including rental, fuel, transport, insurance, and maintenance. No hidden fees ever.</p>
+                    </div>
+                    <div class="feature-demo">
+                        <h4>📊 Multi-Site RFQ System</h4>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Request quotes for multiple equipment across multiple sites with different dates. Vendors can bid on individual items or bundles.</p>
+                    </div>
+                    <div class="feature-demo">
+                        <h4>⚡ Real-Time Data</h4>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Live pricing and availability updates every hour from integrated supplier systems.</p>
+                    </div>
+                    <div class="feature-demo">
+                        <h4>📈 Performance Analytics</h4>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Track utilization, costs, and optimize future procurement decisions with comprehensive dashboards.</p>
+                    </div>
+                    <div class="feature-demo">
+                        <h4>🔄 Flexible Contracts</h4>
+                        <p style="color: var(--text-muted); line-height: 1.7;">Modify terms mid-contract. Extend, swap, or adjust equipment as project needs evolve.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Market Opportunity -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Market <span class="gradient-text">Opportunity</span></h2>
+                <p class="subtitle">Massive addressable market in Australia</p>
+                <div class="stats-showcase">
+                    <div class="stat-box">
+                        <div class="stat-number">$10B</div>
+                        <div class="stat-label">Annual Market Size</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Equipment Suppliers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Target Contractors</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">$120B</div>
+                        <div class="stat-label">Infrastructure Pipeline</div>
+                    </div>
+                </div>
+                <div class="demo-visual" style="margin-top: 3rem; text-align: left;">
+                    <h3 style="margin-bottom: 1.5rem;">Target Industries</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                        <div>
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🏗️</div>
+                            <strong>Construction</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">$120B infrastructure pipeline</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">⛏️</div>
+                            <strong>Mining</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Global resource extraction leader</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌾</div>
+                            <strong>Agriculture</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Smart farming technology adoption</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Business Model -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Business <span class="gradient-text">Model</span></h2>
+                <p class="subtitle">Multiple revenue streams</p>
+                <div class="step-grid">
+                    <div class="step-card">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💵</div>
+                        <h3>Rental Commission</h3>
+                        <p>10-20% commission on every rental transaction processed through the platform.</p>
+                    </div>
+                    <div class="step-card">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h3>Supplier Subscriptions</h3>
+                        <p>Monthly SaaS fees for analytics, advertising, and priority placements.</p>
+                    </div>
+                    <div class="step-card">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🤝</div>
+                        <h3>Partner Revenue</h3>
+                        <p>Affiliate partnerships with insurers, maintenance providers, and financial institutions.</p>
+                    </div>
+                </div>
+                <div class="demo-visual" style="margin-top: 3rem;">
+                    <h3 style="margin-bottom: 2rem;">3-Year Financial Projections</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: 900; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.5rem;">Year 1</div>
+                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">$250K</div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">50,000 users</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: 900; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.5rem;">Year 2</div>
+                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">$5M</div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">100,000 users</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: 900; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.5rem;">Year 3</div>
+                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">$20M</div>
+                            <div style="color: var(--text-muted); font-size: 0.9rem;">200,000 users</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Competitive Advantage -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Competitive <span class="gradient-text">Advantage</span></h2>
+                <p class="subtitle">Why Krayn will win</p>
+                <div class="problem-solution">
+                    <div class="solution-box">
+                        <h3>✓ Our Advantages</h3>
+                        <ul>
+                            <li><strong>First-mover:</strong> No true aggregator exists in Australia</li>
+                            <li><strong>AI Technology:</strong> Proprietary matching algorithms</li>
+                            <li><strong>Real-time Data:</strong> Live pricing & availability</li>
+                            <li><strong>Network Effects:</strong> More suppliers = more buyers</li>
+                            <li><strong>Flexible System:</strong> Multi-site, multi-date RFQs</li>
+                            <li><strong>Transparent Model:</strong> No hidden fees builds trust</li>
+                            <li><strong>Supplier Benefits:</strong> Increase utilization 25%+</li>
+                        </ul>
+                    </div>
+                    <div class="problem-box">
+                        <h3>❌ Competitors' Weaknesses</h3>
+                        <ul>
+                            <li><strong>Coates/Kennards:</strong> Single supplier, no comparison</li>
+                            <li><strong>Machines4U:</strong> Focus on sales, not rentals</li>
+                            <li><strong>Traditional Brokers:</strong> Opaque pricing, manual processes</li>
+                            <li><strong>No AI:</strong> No intelligent recommendations</li>
+                            <li><strong>No Real-time Data:</strong> Outdated information</li>
+                            <li><strong>Rigid Systems:</strong> Can't handle complex RFQs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Call to Action -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Join the <span class="gradient-text">Revolution</span></h2>
+                <p class="subtitle">Transforming heavy equipment rental in Australia</p>
+                <div style="font-size: 6rem; margin: 2rem 0;" class="animated-icon">🚀</div>
+                <div class="demo-visual">
+                    <h3 style="font-size: 2rem; margin-bottom: 2rem;">Ready to Get Started?</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
+                            <strong>For Contractors</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Save 15-20% on rentals</p>
+                            <button class="nav-btn" style="margin-top: 1rem; position: static; transform: none; width: 100%;">Start Comparing</button>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏢</div>
+                            <strong>For Suppliers</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Increase utilization 25%</p>
+                            <button class="nav-btn" style="margin-top: 1rem; position: static; transform: none; width: 100%;">Join Platform</button>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">💼</div>
+                            <strong>For Investors</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">$10B market opportunity</p>
+                            <button class="nav-btn" style="margin-top: 1rem; position: static; transform: none; width: 100%;">View Deck</button>
+                        </div>
+                    </div>
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Founded by <strong style="color: var(--text-light);">Anwar Malik</strong></p>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">📧 contact@krayn.com.au | 🌐 www.krayn.com.au</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('progressBar');
+        const slideIndicator = document.getElementById('slideIndicator');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateSlide() {
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // Show current slide
+            slides[currentSlide].classList.add('active');
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+            
+            // Update indicator
+            slideIndicator.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update button states
+            prevBtn.disabled = currentSlide === 0;
+            prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
+            
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.textContent = '🎉 Finish Demo';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            
+            // Loop back to start if at the end
+            if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            }
+            
+            // Prevent going below 0
+            if (currentSlide < 0) {
+                currentSlide = 0;
+            }
+            
+            updateSlide();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < totalSlides - 1) {
+                    changeSlide(1);
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    changeSlide(-1);
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                currentSlide = 0;
+                updateSlide();
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                currentSlide = totalSlides - 1;
+                updateSlide();
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                // Swipe left - next slide
+                if (currentSlide < totalSlides - 1) {
+                    changeSlide(1);
+                }
+            }
+            if (touchEndX > touchStartX + 50) {
+                // Swipe right - previous slide
+                if (currentSlide > 0) {
+                    changeSlide(-1);
+                }
+            }
+        }
+
+        // Initialize
+        updateSlide();
+
+        // Auto-advance timer (optional - comment out if not wanted)
+        // let autoAdvanceTimer;
+        // function startAutoAdvance() {
+        //     autoAdvanceTimer = setInterval(() => {
+        //         if (currentSlide < totalSlides - 1) {
+        //             changeSlide(1);
+        //         } else {
+        //             clearInterval(autoAdvanceTimer);
+        //         }
+        //     }, 8000); // 8 seconds per slide
+        // }
+        // startAutoAdvance();
+    </script>
+</body>
+</html>

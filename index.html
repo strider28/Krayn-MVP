@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krayn - AI-Powered Heavy Machinery Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-nav {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 100px;
+            padding-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.15), transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.15), transparent 50%);
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .section {
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+        }
+
+        .equipment-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .equipment-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
+        }
+
+        .equipment-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .equipment-info {
+            padding: 2rem;
+        }
+
+        .equipment-tag {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .equipment-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .equipment-specs {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .equipment-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .features-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.2);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .calculator-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 4rem;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+        }
+
+        .input-group select,
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cost-result {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .cost-breakdown {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .cost-total {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .assumptions {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .assumptions-title {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: var(--bg-dark);
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero-container,
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">KRAYN</div>
+            <div class="nav-links">
+                <a href="search.html">Search Equipment</a>
+                <a href="rfq.html">Request Quote</a>
+                <a href="rfq_list.html">RFQ List</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="suppliers.html">For Suppliers</a>
+                <a href="blog.html">Blog</a>
+                <a href="about.html">About</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
+                <a href="demo.html" class="cta-nav">View Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">🚀 AI-Powered Equipment Marketplace</div>
+                <h1>Compare. Book. <br/><span class="gradient-text">Save.</span></h1>
+                <p>Aggregate prices from hundreds of suppliers in real-time. Get instant availability, AI-powered recommendations, and intelligent lifecycle cost analysis. Book heavy machinery in minutes—not weeks. Save on every rental.</p>
+                <div class="hero-buttons">
+                    <a href="#equipment" class="btn btn-primary">Search & Compare</a>
+                    <a href="#calculator" class="btn btn-secondary">Cost Calculator</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/excavator-hero.jpg" alt="Excavator Heavy Construction Machinery" style="width: 100%; height: auto; border-radius: 20px;">
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="equipment">
+        <div class="section-header">
+            <h2 class="section-title">Equipment <span class="gradient-text">Available Now</span></h2>
+            <p class="section-subtitle">Real pricing from verified suppliers • Updated in real-time</p>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-right: 1rem;">
+                    📍 Nationwide Coverage
+                </span>
+                <span style="background: rgba(14, 165, 233, 0.1); color: var(--primary); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
+                    ✓ 247 Equipment Items Available
+                </span>
+            </div>
+        </div>
+        <div class="equipment-grid">
+            <div class="equipment-card">
+                <img src="images/excavator.jpg" alt="Hydraulic Excavator" class="equipment-image">
+                <div class="equipment-info">
+                    <span class="equipment-tag">✓ Available Now</span>
+                    <h3>Hydraulic Excavator</h3>
+                    <p class="equipment-specs">30-ton • 300 HP • Multiple suppliers available</p>
+                    <div class="equipment-price">
+                        <div class="price">$5,200<span style="font-size: 1rem; color: var(--text-muted);">/month</span></div>
+                        <button class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Compare</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="equipment-card">
+                <img src="images/bulldozer.jpg" alt="Crawler Bulldozer" class="equipment-image">
+                <div class="equipment-info">
+                    <span class="equipment-tag">✓ Available Now</span>
+                    <h3>Crawler Bulldozer</h3>
+                    <p class="equipment-specs">300 HP • Diesel • Multiple suppliers available</p>
+                    <div class="equipment-price">
+                        <div class="price">$5,800<span style="font-size: 1rem; color: var(--text-muted);">/month</span></div>
+                        <button class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Compare</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="equipment-card">
+                <img src="images/crane.jpg" alt="Mobile Crane" class="equipment-image">
+                <div class="equipment-info">
+                    <span class="equipment-tag" style="background: rgba(245, 158, 11, 0.1); color: var(--secondary);">⏰ 2 Available</span>
+                    <h3>Mobile Crane</h3>
+                    <p class="equipment-specs">50-ton • Telescopic • Available now</p>
+                    <div class="equipment-price">
+                        <div class="price">$7,200<span style="font-size: 1rem; color: var(--text-muted);">/month</span></div>
+                        <button class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Compare</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="features" style="background: rgba(15, 23, 42, 0.3);">
+        <div class="section-header">
+            <h2 class="section-title">How <span class="gradient-text">Krayn</span> Works</h2>
+            <p class="section-subtitle">Book equipment in 3 simple steps</p>
+        </div>
+
+        <div style="max-width: 1000px; margin: 0 auto 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div style="text-align: center; background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; font-weight: 900;">1</div>
+                <h3 style="margin-bottom: 1rem; font-size: 1.4rem;">Search</h3>
+                <p style="color: var(--text-muted);">Enter your equipment needs and location</p>
+            </div>
+
+            <div style="text-align: center; background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; font-weight: 900;">2</div>
+                <h3 style="margin-bottom: 1rem; font-size: 1.4rem;">Compare</h3>
+                <p style="color: var(--text-muted);">AI shows best options with transparent pricing</p>
+            </div>
+
+            <div style="text-align: center; background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; font-weight: 900;">3</div>
+                <h3 style="margin-bottom: 1rem; font-size: 1.4rem;">Book</h3>
+                <p style="color: var(--text-muted);">Instant booking with digital contracts</p>
+            </div>
+        </div>
+
+        <div style="max-width: 1200px; margin: 0 auto 4rem; background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 20px; padding: 3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+            <div>
+                <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">AI-Driven</div>
+                <div style="color: var(--text-muted);">Smart pricing optimization</div>
+            </div>
+            <div>
+                <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">Smart</div>
+                <div style="color: var(--text-muted);">Equipment recommendations</div>
+            </div>
+            <div>
+                <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">Transparent</div>
+                <div style="color: var(--text-muted);">True lifecycle cost analysis</div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Price Intelligence & Recommendations</h3>
+                <p style="color: var(--text-muted); line-height: 1.7;">Our AI analyzes thousands of rentals to recommend optimal pricing and matches your project needs with perfect equipment. Get real-time market rates, seasonal trends, demand forecasts, and equipment suggestions based on location, supplier ratings, and specs.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Lifecycle Cost Analysis</h3>
+                <p style="color: var(--text-muted); line-height: 1.7;">See true total cost before booking. AI calculates rental, fuel, operator, maintenance, transport, and insurance—eliminating hidden surprises. Get complete expense visibility for smarter budgeting.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Predictive Availability & Dynamic Pricing</h3>
+                <p style="color: var(--text-muted); line-height: 1.7;">AI forecasts equipment demand patterns to help you book at optimal times and avoid peak pricing. For suppliers, automatic pricing adjustments based on utilization rates, market demand, and competitor rates maximize revenue.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Utilization Optimization</h3>
+                <p style="color: var(--text-muted); line-height: 1.7;">AI identifies idle equipment and suggests strategic pricing adjustments. Helps suppliers increase utilization from 40-60% to 70-85% through intelligent demand matching and smart recommendations.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="calculator">
+        <div class="calculator-container">
+            <div class="section-header">
+                <h2 class="section-title">AI Lifecycle Cost Calculator</h2>
+                <p class="section-subtitle">True total cost analysis powered by machine learning</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem;">Our AI analyzes rental fees, fuel consumption, operator costs, maintenance, transport, insurance, and idle time to show your complete expense picture</p>
+            </div>
+            <div class="calculator-grid">
+                <div>
+                    <div class="input-group">
+                        <label>Category</label>
+                        <select id="categorySelect" onchange="updateSubcategories()">
+                            <option value="">Select Category</option>
+                            <option value="earthmoving">Earthmoving</option>
+                            <option value="lifting">Lifting & Cranes</option>
+                            <option value="power">Power & Generators</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Sub-Category</label>
+                        <select id="subcategorySelect" onchange="updateMachines()">
+                            <option value="">Select Sub-Category</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Machine</label>
+                        <select id="machineSelect">
+                            <option value="">Select Machine</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Rental Duration (days)</label>
+                        <input type="number" id="duration" value="14" min="1" max="365">
+                    </div>
+                    <div class="input-group">
+                        <label>Daily Usage (hours)</label>
+                        <input type="number" id="usage" value="8" min="1" max="24">
+                    </div>
+                    <button class="btn btn-primary" onclick="calculateCost()" style="width: 100%; margin-top: 1rem;">Calculate Total Cost</button>
+                </div>
+                <div>
+                    <div class="cost-result">
+                        <h3 style="margin-bottom: 1.2rem; font-size: 1.3rem;">Cost Breakdown</h3>
+                        <div class="cost-breakdown">
+                            <span>Rental Fee:</span>
+                            <span id="rentalFee">$3,920</span>
+                        </div>
+                        <div class="cost-breakdown">
+                            <span>Fuel Costs:</span>
+                            <span id="fuelCost">$2,240</span>
+                        </div>
+                        <div class="cost-breakdown">
+                            <span>Operator Costs:</span>
+                            <span id="operatorCost">$3,920</span>
+                        </div>
+                        <div class="cost-breakdown">
+                            <span>Maintenance:</span>
+                            <span id="maintenanceCost">$420</span>
+                        </div>
+                        <div class="cost-breakdown" style="border: none;">
+                            <span>Transport & Insurance:</span>
+                            <span id="transportCost">$600</span>
+                        </div>
+                        <div style="border-top: 2px solid var(--primary); padding-top: 1rem; margin-top: 0.8rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 1.2rem; font-weight: 700;">Total Cost:</span>
+                                <span class="cost-total" id="totalCost">$11,100</span>
+                            </div>
+                        </div>
+                        <div class="assumptions">
+                            <div class="assumptions-title">Calculation Assumptions:</div>
+                            <div id="assumptionsText">
+                                • Operator: $35/hr average hourly rate<br>
+                                • Fuel: $10/hr consumption rate<br>
+                                • Maintenance: $30/day average<br>
+                                • Transport: $400 delivery + $200 return<br>
+                                • Insurance: Included in base rate
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; text-align: left;">
+            <div>
+                <div class="logo" style="margin-bottom: 1rem;">KRAYN</div>
+                <p style="color: var(--text-muted); line-height: 1.6;">Australia's leading equipment aggregator. Compare live pricing from hundreds of suppliers. AI-powered recommendations. Book heavy machinery in minutes.</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Product</h4>
+                <a href="search.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Search Equipment</a>
+                <a href="pricing.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Pricing</a>
+                <a href="blog.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Case Studies</a>
+                <a href="demo.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Demo</a>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Company</h4>
+                <a href="about.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">About Us</a>
+                <a href="suppliers.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">For Suppliers</a>
+                <a href="contact.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Contact</a>
+                <a href="blog.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Blog</a>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Resources</h4>
+                <a href="faq.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">FAQ</a>
+                <a href="dashboard.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Dashboard</a>
+                <a href="rfq.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Request Quote</a>
+                <a href="rfq-list.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">RFQ List</a>
+                <a href="mobile-app.html" style="display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 0.8rem; transition: color 0.3s;">Mobile App</a>
+            </div>
+        </div>
+        <div style="max-width: 1400px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+            <p style="font-size: 1rem; color: var(--text-muted);">&copy; 2025 Krayn. All rights reserved. Founded by Anwar Malik.</p>
+        </div>
+    </footer>
+
+    <script>
+        const equipmentData = {
+            earthmoving: {
+                name: 'Earthmoving',
+                subcategories: {
+                    excavators: {
+                        name: 'Excavators',
+                        machines: {
+                            'excavator-1t': { name: '1T Mini Excavator', rental: 195, fuel: 5, operator: 35 },
+                            'excavator-3.5t': { name: '3.5T Excavator', rental: 280, fuel: 10, operator: 35 },
+                            'excavator-8t': { name: '8T Excavator', rental: 420, fuel: 15, operator: 40 }
+                        }
+                    },
+                    bulldozers: {
+                        name: 'Bulldozers',
+                        machines: {
+                            'bulldozer-d6': { name: 'CAT D6 Bulldozer', rental: 450, fuel: 18, operator: 40 },
+                            'bulldozer-d8': { name: 'CAT D8 Bulldozer', rental: 550, fuel: 22, operator: 45 }
+                        }
+                    },
+                    graders: {
+                        name: 'Graders',
+                        machines: {
+                            'grader-140m': { name: 'CAT 140M Grader', rental: 420, fuel: 14, operator: 38 }
+                        }
+                    }
+                }
+            },
+            lifting: {
+                name: 'Lifting & Cranes',
+                subcategories: {
+                    cranes: {
+                        name: 'Mobile Cranes',
+                        machines: {
+                            'crane-25t': { name: '25-ton Mobile Crane', rental: 650, fuel: 20, operator: 50 },
+                            'crane-50t': { name: '50-ton Mobile Crane', rental: 850, fuel: 28, operator: 55 }
+                        }
+                    },
+                    telehandlers: {
+                        name: 'Telehandlers',
+                        machines: {
+                            'telehandler-5m': { name: '5m Telehandler', rental: 220, fuel: 8, operator: 32 },
+                            'telehandler-9m': { name: '9m Telehandler', rental: 280, fuel: 10, operator: 35 }
+                        }
+                    }
+                }
+            },
+            power: {
+                name: 'Power & Generators',
+                subcategories: {
+                    generators: {
+                        name: 'Generators',
+                        machines: {
+                            'gen-6.5kva': { name: '6.5 kVA Generator', rental: 85, fuel: 3, operator: 0 },
+                            'gen-25kva': { name: '25 kVA Diesel Generator', rental: 180, fuel: 8, operator: 0 }
+                        }
+                    }
+                }
+            }
+        };
+
+        function updateSubcategories() {
+            const category = document.getElementById('categorySelect').value;
+            const subcategorySelect = document.getElementById('subcategorySelect');
+            const machineSelect = document.getElementById('machineSelect');
+            
+            subcategorySelect.innerHTML = '<option value="">Select Sub-Category</option>';
+            machineSelect.innerHTML = '<option value="">Select Machine</option>';
+            
+            if (category && equipmentData[category]) {
+                const subcategories = equipmentData[category].subcategories;
+                for (const [key, value] of Object.entries(subcategories)) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = value.name;
+                    subcategorySelect.appendChild(option);
+                }
+            }
+        }
+
+        function updateMachines() {
+            const category = document.getElementById('categorySelect').value;
+            const subcategory = document.getElementById('subcategorySelect').value;
+            const machineSelect = document.getElementById('machineSelect');
+            
+            machineSelect.innerHTML = '<option value="">Select Machine</option>';
+            
+            if (category && subcategory && equipmentData[category]?.subcategories[subcategory]) {
+                const machines = equipmentData[category].subcategories[subcategory].machines;
+                for (const [key, value] of Object.entries(machines)) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = value.name;
+                    machineSelect.appendChild(option);
+                }
+            }
+        }
+
+        function calculateCost() {
+            const category = document.getElementById('categorySelect').value;
+            const subcategory = document.getElementById('subcategorySelect').value;
+            const machineKey = document.getElementById('machineSelect').value;
+            const duration = parseFloat(document.getElementById('duration').value);
+            const usage = parseFloat(document.getElementById('usage').value);
+            
+            if (!category || !subcategory || !machineKey) {
+                alert('⚠️ Please select Category, Sub-Category, and Machine');
+                return;
+            }
+            
+            const machine = equipmentData[category].subcategories[subcategory].machines[machineKey];
+            
+            const rentalFee = machine.rental * duration;
+            const fuelCost = machine.fuel * usage * duration;
+            const operatorCost = machine.operator * usage * duration;
+            const maintenanceCost = 30 * duration;
+            const transportCost = 400 + 200;
+            
+            const totalCost = rentalFee + fuelCost + operatorCost + maintenanceCost + transportCost;
+            
+            document.getElementById('rentalFee').textContent = '$' + rentalFee.toLocaleString();
+            document.getElementById('fuelCost').textContent = '$' + fuelCost.toLocaleString();
+            document.getElementById('operatorCost').textContent = '$' + operatorCost.toLocaleString();
+            document.getElementById('maintenanceCost').textContent = '$' + maintenanceCost.toLocaleString();
+            document.getElementById('transportCost').textContent = '$' + transportCost.toLocaleString();
+            document.getElementById('totalCost').textContent = '$' + totalCost.toLocaleString();
+            
+            const operatorRate = machine.operator > 0 ? `$${machine.operator}/hr` : 'Not required';
+            const fuelRate = `$${machine.fuel}/hr`;
+            
+            document.getElementById('assumptionsText').innerHTML = `
+                • Operator: ${operatorRate} average hourly rate<br>
+                • Fuel: ${fuelRate} consumption rate<br>
+                • Maintenance: $30/day average<br>
+                • Transport: $400 delivery + $200 return<br>
+                • Insurance: Included in base rate
+            `;
+        }
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

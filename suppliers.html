@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Portal - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --accent: #8b5cf6;
+            --bg-darker: #020617;
+            --bg-dark: #0f172a;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            min-width: 1200px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 150px 2rem 4rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .supplier-header {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .supplier-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+        }
+
+        .supplier-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .supplier-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            color: var(--text-muted);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .stat-breakdown {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--text-light);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .equipment-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .equipment-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(139, 92, 246, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .equipment-info {
+            padding: 1.5rem;
+        }
+
+        .equipment-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .equipment-specs {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .equipment-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1rem;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-rented {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .utilization-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .utilization-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            transition: width 0.3s;
+        }
+
+        .chart-container {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .chart {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        .chart-bar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .chart-bar {
+            width: 50px;
+            min-width: 50px;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-edit {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-edit:hover {
+            background: rgba(14, 165, 233, 0.2);
+        }
+
+        .small-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            margin: 5% auto;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: var(--text-muted);
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--text-light);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .dashboard-section {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-section p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dashboard-section table th,
+        .dashboard-section table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-section table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .dashboard-section table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">KRAYN</a>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">For Suppliers</a>
+                <a href="#">Pricing</a>
+                <a href="#">About</a>
+                <a href="#">Supplier Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Join Australia's Leading <span class="gradient-text">Equipment Marketplace</span></h1>
+            <p>Increase your utilization, reach thousands of buyers, and grow your rental business with Krayn</p>
+            <a href="#benefits" class="btn btn-primary">Become a Supplier</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 2rem; text-align: center;">
+            Example: <span class="gradient-text">Apex Equipment Solutions</span> Supplier Dashboard
+        </h2>
+
+        <div class="supplier-header">
+            <div class="supplier-logo">AES</div>
+            <div class="supplier-info">
+                <h2>Apex Equipment Solutions <span class="verified-badge">✓ Verified</span></h2>
+                <div class="supplier-meta">
+                    <span>⭐ 4.8 Rating (2,156 reviews)</span>
+                    <span>📍 Melbourne, VIC</span>
+                    <span>🏢 12 years in business</span>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <span style="color: var(--text-muted);">📞 +61 3 8888 5500</span>
+                    <span style="color: var(--text-muted); margin-left: 2rem;">✉️ hire@apexequip.com.au</span>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary">Edit Profile</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Equipment</div>
+                <div class="stat-value">24</div>
+                <div class="stat-breakdown">
+                    <div>🟢 Available: 14</div>
+                    <div>🟡 Rented: 10</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Utilization Rate</div>
+                <div class="stat-value">89%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Monthly Revenue</div>
+                <div class="stat-value">$1.2M</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">On-Time Delivery</div>
+                <div class="stat-value">98%</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3 class="chart-title">Revenue & Utilization (Last 6 Months)</h3>
+            <div class="chart">
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 72%;"></div>
+                    <div class="chart-label">Jan<br>$865k<br><small style="color: var(--success);">82% util</small></div>
+                </div>
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 78%;"></div>
+                    <div class="chart-label">Feb<br>$935k<br><small style="color: var(--success);">84% util</small></div>
+                </div>
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 83%;"></div>
+                    <div class="chart-label">Mar<br>$995k<br><small style="color: var(--success);">85% util</small></div>
+                </div>
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 90%;"></div>
+                    <div class="chart-label">Apr<br>$1.08M<br><small style="color: var(--success);">87% util</small></div>
+                </div>
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 95%;"></div>
+                    <div class="chart-label">May<br>$1.14M<br><small style="color: var(--success);">88% util</small></div>
+                </div>
+                <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 100%;"></div>
+                    <div class="chart-label">Jun<br>$1.2M<br><small style="color: var(--success);">89% util</small></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('inventory')">Equipment Inventory</button>
+            <button class="tab" onclick="switchTab('rentals')">Upcoming Rentals</button>
+            <button class="tab" onclick="switchTab('maintenance')">Maintenance</button>
+            <button class="tab" onclick="switchTab('pricing')">Special Pricing</button>
+            <button class="tab" onclick="switchTab('addEquipment')">Add Equipment</button>
+        </div>
+
+        <div id="inventoryTab" class="tab-content active">
+            <div class="equipment-grid">
+                <!-- Equipment Card 1 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🚜</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT 320 Excavator</div>
+                        <div class="equipment-specs">30-ton • 300 HP • 2022</div>
+                        <div class="equipment-specs">$5,200/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">87%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 87%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <button class="btn-edit" onclick="openEditModal('excavator', 'CAT 320 Excavator', '30-ton • 300 HP • 2022', 5200, 'Available', 2400)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Card 2 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🚧</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT D8T Bulldozer</div>
+                        <div class="equipment-specs">410 HP • 2022</div>
+                        <div class="equipment-specs">$7,500/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">86%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 86%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-rented">Rented</span>
+                            <button class="btn-edit" onclick="openEditModal('bulldozer', 'CAT D8T Bulldozer', '410 HP • 2022', 7500, 'Rented', 1600)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Card 3 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🏗️</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">Tadano GR-750XL Crane</div>
+                        <div class="equipment-specs">75-ton • 420 HP • 2022</div>
+                        <div class="equipment-specs">$7,200/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">85%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <button class="btn-edit" onclick="openEditModal('crane', 'Tadano GR-750XL Crane', '75-ton • 420 HP • 2022', 7200, 'Available', 1800)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Card 4 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">⚙️</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT 140M3 Grader</div>
+                        <div class="equipment-specs">210 HP • 2023</div>
+                        <div class="equipment-specs">$5,600/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">84%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 84%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-rented">Rented</span>
+                            <button class="btn-edit" onclick="openEditModal('grader', 'CAT 140M3 Grader', '210 HP • 2023', 5600, 'Rented', 1800)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Card 5 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🔧</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT 966M Wheel Loader</div>
+                        <div class="equipment-specs">5-ton • 270 HP • 2022</div>
+                        <div class="equipment-specs">$4,200/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">90%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <button class="btn-edit" onclick="openEditModal('loader', 'CAT 966M Wheel Loader', '5-ton • 270 HP • 2022', 4200, 'Available', 1650)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Card 6 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🛞</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT CS56 Compactor</div>
+                        <div class="equipment-specs">12-ton • 140 HP • 2022</div>
+                        <div class="equipment-specs">$3,500/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">81%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 81%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <button class="btn-edit" onclick="openEditModal('compactor', 'CAT CS56 Compactor', '12-ton • 140 HP • 2022', 3500, 'Available', 1900)">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary">View All 24 Equipment Items →</button>
+            </div>
+        </div>
+
+        <div id="rentalsTab" class="tab-content">
+            <div class="dashboard-section">
+                <h3>Upcoming Rentals & RFQ Management</h3>
+                <p>This table showcases pending booking requests and upcoming rentals. Vendors can approve, decline or modify bookings.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Equipment</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BuildCo Pty Ltd</td>
+                            <td>9 m Telehandler</td>
+                            <td>20 Aug 2025</td>
+                            <td>03 Sep 2025</td>
+                            <td><span class="status-badge status-rented">Pending</span></td>
+                            <td>
+                                <button class="btn-secondary small-btn">Approve</button>
+                                <button class="btn-secondary small-btn">Decline</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>GreenScape Gardens</td>
+                            <td>20" Gas Chainsaw</td>
+                            <td>25 Aug 2025</td>
+                            <td>26 Aug 2025</td>
+                            <td><span class="status-badge status-rented">Awaiting Payment</span></td>
+                            <td><button class="btn-secondary small-btn">Remind</button></td>
+                        </tr>
+                        <tr>
+                            <td>Metro Construction</td>
+                            <td>50 m Boom Truck</td>
+                            <td>05 Sep 2025</td>
+                            <td>20 Sep 2025</td>
+                            <td><span class="status-badge status-available">Confirmed</span></td>
+                            <td><button class="btn-secondary small-btn">View Contract</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="maintenanceTab" class="tab-content">
+            <div class="dashboard-section">
+                <h3>Maintenance & Inspection Schedule</h3>
+                <p>Stay on top of service intervals and inspections to maximise uptime and safety.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Equipment</th>
+                            <th>Last Service</th>
+                            <th>Next Service Due</th>
+                            <th>Inspection Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>25 kVA Diesel Generator</td>
+                            <td>15 Jun 2025</td>
+                            <td>15 Dec 2025</td>
+                            <td><span class="status-badge status-available">Scheduled</span></td>
+                            <td><button class="btn-secondary small-btn">Send Reminder</button></td>
+                        </tr>
+                        <tr>
+                            <td>2.5 m Smooth Drum Roller</td>
+                            <td>01 Jul 2025</td>
+                            <td>01 Oct 2025</td>
+                            <td><span class="status-badge status-rented">Inspection Due</span></td>
+                            <td><button class="btn-secondary small-btn">Book Inspection</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="pricingTab" class="tab-content">
+            <div class="dashboard-section">
+                <h3>Set Special Pricing</h3>
+                <p>Define custom rental rates for a specific piece of equipment during a given date range.</p>
+            </div>
+        </div>
+
+        <div id="addEquipmentTab" class="tab-content">
+            <div class="dashboard-section">
+                <h3>Add New Equipment</h3>
+                <p>Add new equipment to your inventory.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Equipment Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2 style="margin-bottom: 2rem;">Edit Equipment</h2>
+            <form id="editForm" onsubmit="saveEquipment(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipment Name</label>
+                        <input type="text" id="editName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="editStatus" required>
+                            <option value="Available">Available</option>
+                            <option value="Rented">Rented</option>
+                            <option value="Maintenance">Under Maintenance</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Specifications</label>
+                        <input type="text" id="editSpecs" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Operating Hours</label>
+                        <input type="number" id="editHours" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Monthly Rate (AUD)</label>
+                        <input type="number" id="editPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Daily Rate (AUD)</label>
+                        <input type="number" id="editDailyPrice" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Weekly Rate (AUD)</label>
+                        <input type="number" id="editWeeklyPrice" required>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentEquipmentId = '';
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            const tabMap = {
+                'inventory': 'inventoryTab',
+                'rentals': 'rentalsTab',
+                'maintenance': 'maintenanceTab',
+                'pricing': 'pricingTab',
+                'addEquipment': 'addEquipmentTab'
+            };
+            
+            const tabId = tabMap[tab];
+            if (tabId) {
+                document.getElementById(tabId).classList.add('active');
+                event.target.classList.add('active');
+            }
+        }
+
+        function openEditModal(id, name, specs, price, status, hours) {
+            currentEquipmentId = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editSpecs').value = specs;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editDailyPrice').value = Math.round(price / 30 * 10);
+            document.getElementById('editWeeklyPrice').value = Math.round(price / 4);
+            document.getElementById('editStatus').value = status;
+            document.getElementById('editHours').value = hours;
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function saveEquipment(event) {
+            event.preventDefault();
+            const name = document.getElementById('editName').value;
+            const status = document.getElementById('editStatus').value;
+            const price = document.getElementById('editPrice').value;
+            const dailyPrice = document.getElementById('editDailyPrice').value;
+            const weeklyPrice = document.getElementById('editWeeklyPrice').value;
+            
+            alert(`✅ Equipment Updated!\n\nName: ${name}\nStatus: ${status}\nMonthly Rate: $${price}\nDaily Rate: $${dailyPrice}\nWeekly Rate: $${weeklyPrice}`);
+            closeEditModal();
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target == modal) {
+                closeEditModal();
+            }
+        }
+    </script>
+</body>
+</html>

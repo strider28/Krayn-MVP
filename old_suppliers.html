@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Portal - Krayn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --accent: #8b5cf6;
+            --bg-darker: #020617;
+            --bg-dark: #0f172a;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-darker);
+            color: var(--text-light);
+            min-width: 1200px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 150px 2rem 4rem;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .supplier-header {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .supplier-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+        }
+
+        .supplier-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .supplier-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            color: var(--text-muted);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--text-light);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .equipment-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .equipment-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(139, 92, 246, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .equipment-info {
+            padding: 1.5rem;
+        }
+
+        .equipment-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .equipment-specs {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .equipment-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-rented {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .utilization-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .utilization-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            transition: width 0.3s;
+        }
+
+        .chart-container {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .chart {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-label {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KRAYN</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="suppliers.html">For Suppliers</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="about.html">About</a>
+                <a href="#">Supplier Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Join Australia's Leading <span class="gradient-text">Equipment Marketplace</span></h1>
+            <p>Increase your utilization, reach thousands of buyers, and grow your rental business with Krayn</p>
+            <a href="#benefits" class="btn btn-primary">Become a Supplier</a>
+        </div>
+    </div>
+
+    <!-- Supplier Dashboard Example -->
+    <div class="container">
+        <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 2rem; text-align: center;">
+            Example: <span class="gradient-text">CoatesHire</span> Supplier Dashboard
+        </h2>
+
+        <!-- Supplier Header -->
+        <div class="supplier-header">
+            <div class="supplier-logo">CH</div>
+            <div class="supplier-info">
+                <h2>CoatesHire <span class="verified-badge">✓ Verified</span></h2>
+                <div class="supplier-meta">
+                    <span>⭐ 4.7 Rating (1,842 reviews)</span>
+                    <span>📍 Sydney, NSW</span>
+                    <span>🏢 15 years in business</span>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <span style="color: var(--text-muted);">📞 +61 2 9999 1111</span>
+                    <span style="color: var(--text-muted); margin-left: 2rem;">✉️ rentals@coateshire.com.au</span>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary">Edit Profile</button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Equipment</div>
+                <div class="stat-value">18</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Utilization Rate</div>
+                <div class="stat-value">87%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Monthly Revenue</div>
+                <div class="stat-value">$1.05M</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">On-Time Delivery</div>
+                <div class="stat-value">96%</div>
+            </div>
+        </div>
+
+        <!-- Revenue Chart -->
+        <div class="chart-container">
+            <h3 class="chart-title">Rental Revenue (Last 6 Months)</h3>
+            <div class="chart">
+                <div style="flex: 1;">
+                    <div class="chart-bar" style="height: 75%;"></div>
+                    <div class="chart-label">Jan<br>$785k</div>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chart-bar" style="height: 78%;"></div>
+                    <div class="chart-label">Feb<br>$820k</div>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chart-bar" style="height: 85%;"></div>
+                    <div class="chart-label">Mar<br>$895k</div>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chart-bar" style="height: 88%;"></div>
+                    <div class="chart-label">Apr<br>$920k</div>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chart-bar" style="height: 94%;"></div>
+                    <div class="chart-label">May<br>$985k</div>
+                </div>
+                <div style="flex: 1;">
+                    <div class="chart-bar" style="height: 100%;"></div>
+                    <div class="chart-label">Jun<br>$1.05M</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('inventory')">Equipment Inventory</button>
+            <button class="tab" onclick="switchTab('history')">Rental History</button>
+            <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+        </div>
+
+        <!-- Equipment Inventory Tab -->
+        <div id="inventoryTab">
+            <div class="equipment-grid">
+                <!-- Equipment 1 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🚜</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT 320 Excavator</div>
+                        <div class="equipment-specs">30-ton • 300 HP • 2022</div>
+                        <div class="equipment-specs">$5,200/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">87%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 87%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">2,400 hrs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment 2 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🚧</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT D8T Bulldozer</div>
+                        <div class="equipment-specs">410 HP • 2022</div>
+                        <div class="equipment-specs">$7,500/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">86%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 86%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-rented">Rented</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">1,600 hrs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment 3 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🏗️</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">Tadano GR-750XL Crane</div>
+                        <div class="equipment-specs">75-ton • 420 HP • 2022</div>
+                        <div class="equipment-specs">$7,200/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">85%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">1,800 hrs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment 4 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">⚙️</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT 140M3 Grader</div>
+                        <div class="equipment-specs">210 HP • 2022</div>
+                        <div class="equipment-specs">$5,600/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">84%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 84%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-rented">Rented</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">1,800 hrs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment 5 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🔧</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT 966M Wheel Loader</div>
+                        <div class="equipment-specs">5-ton • 270 HP • 2022</div>
+                        <div class="equipment-specs">$4,200/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">85%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">1,650 hrs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment 6 -->
+                <div class="equipment-card">
+                    <div class="equipment-image">🛞</div>
+                    <div class="equipment-info">
+                        <div class="equipment-name">CAT CS56 Compactor</div>
+                        <div class="equipment-specs">12-ton • 140 HP • 2022</div>
+                        <div class="equipment-specs">$3,500/month</div>
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem;">
+                                <span>Utilization</span>
+                                <span style="font-weight: 700;">81%</span>
+                            </div>
+                            <div class="utilization-bar">
+                                <div class="utilization-fill" style="width: 81%;"></div>
+                            </div>
+                        </div>
+                        <div class="equipment-status">
+                            <span class="status-badge status-available">Available</span>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">1,900 hrs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary">View All 18 Equipment Items →</button>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div id="benefits" style="margin-top: 6rem;">
+            <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem; text-align: center;">
+                Why Join <span class="gradient-text">Krayn</span>?
+            </h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">
+                Increase revenue and utilization with Australia's leading equipment marketplace
+            </p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <h3>Increase Utilization</h3>
+                    <p>Fill idle time and maximize equipment usage. Our suppliers see an average 25% increase in utilization rates.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Reach More Buyers</h3>
+                    <p>Access 50,000+ active contractors and businesses looking for equipment. Expand beyond your local market.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Instant Bookings</h3>
+                    <p>Automated pricing, contracts, and scheduling. Reduce administrative time by 70% with our platform.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Dynamic Pricing</h3>
+                    <p>AI-powered pricing recommendations help you stay competitive while maximizing revenue.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Track utilization, revenue, and performance metrics. Make data-driven decisions to grow your business.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛡️</div>
+                    <h3>Protected Payments</h3>
+                    <p>Secure payment processing with guaranteed payouts. We handle all billing and collections for you.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 4rem;">
+                <h3 style="font-size: 2rem; margin-bottom: 1rem;">Ready to Grow Your Business?</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem;">Join hundreds of suppliers already using Krayn</p>
+                <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1.2rem 3rem;">Apply Now - It's Free</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            // This would switch between different tabs in a real implementation
+            alert('Tab switching functionality - would show: ' + tab);
+        }
+    </script>
+</body>
+</html>
